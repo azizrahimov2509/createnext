@@ -32,7 +32,7 @@ export default function page() {
           <input
             type="text"
             placeholder="Search for TV series"
-            className="border rounded-l-lg py-2 px-4 w-[249px] h-[32] outline-none bg-inherit border-none text-xl"
+            className="border rounded-l-lg py-2 px-4 w-[249px] h-[32] outline-none bg-inherit border-none text-xl caret-red-800"
           />
         </div>
 
