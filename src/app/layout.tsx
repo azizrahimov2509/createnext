@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex min-h-screen">
+        <div className="flex ">
           <header className="flex flex-col items-center justify-between w-[96px] h-[860px] bg-[#161D2F] px-2 py-5 rounded-3xl m-4">
             <div className="flex flex-col items-center justify-between gap-14">
               <div>

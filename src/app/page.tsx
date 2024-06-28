@@ -43,62 +43,22 @@ export default function Home() {
         <h2 className="text-3xl from-neutral-400 mb-4">Trending</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 ">
           {movies.map((movie) => (
-            <div
-              key={movie.id}
-              className="relative bg-inherit shadow-md rounded-lg overflow-hidden"
-            >
-              <Image
-                src={movie.imageUrl}
-                alt={movie.title}
-                width={470}
-                height={230}
-                className=" w-[470px] h-[230px]"
-              />
-              <div className="absolute bottom-0 left-0 w-full p-4">
-                <div className="flex items-center gap-1 from-neutral-400 text-[15px] text-slate-50 ">
-                  <p>2019</p>
-                  <span className=" w-1 h-1 bg-slate-50 rounded-full"></span>
-                  <p className="flex items-center gap-1">
-                    <Image
-                      src={Shape}
-                      alt={movie.title}
-                      width={12}
-                      height={12}
-                    />{" "}
-                    movie
-                  </p>
-                  <span className=" w-1 h-1 bg-slate-50 rounded-full"></span>
-                  <p>PG</p>
-                </div>
-                <h3 className="text-2xl from-neutral-400 leading-6 ">
-                  {movie.title}
-                </h3>
-              </div>
-            </div>
-          ))}
-        </div>
-        {""}
-        <div className="mt-5 flex flex-col items-start justify-between gap-4">
-          <h2 className="text-3xl from-neutral-400 tracking-[-0.5px] mb-4">
-            Recomended for you
-          </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {recomendedmovies.map((movie) => (
+            <Link href="#">
               <div
                 key={movie.id}
-                className="bg-inherit  shadow-md rounded-lg overflow-hidden"
+                className="relative bg-inherit shadow-md rounded-lg overflow-hidden"
               >
                 <Image
                   src={movie.imageUrl}
                   alt={movie.title}
-                  width={280}
-                  height={174}
+                  width={470}
+                  height={230}
+                  className=" w-[470px] h-[230px]"
                 />
-
-                <div className="p-4">
-                  <div className="flex items-center gap-2 from-neutral-400 text-[13px] mb-1">
+                <div className="absolute bottom-0 left-0 w-full p-4">
+                  <div className="flex items-center gap-1 from-neutral-400 text-[15px] text-slate-50 ">
                     <p>2019</p>
-                    <span className=" w-1 h-1 bg-zinc-500 rounded-full"></span>
+                    <span className=" w-1 h-1 bg-slate-50 rounded-full"></span>
                     <p className="flex items-center gap-1">
                       <Image
                         src={Shape}
@@ -108,14 +68,58 @@ export default function Home() {
                       />{" "}
                       movie
                     </p>
-                    <span className=" w-1 h-1 bg-zinc-500 rounded-full"></span>
+                    <span className=" w-1 h-1 bg-slate-50 rounded-full"></span>
                     <p>PG</p>
                   </div>
-                  <h3 className="text-lg from-neutral-400 leading-6 ">
+                  <h3 className="text-2xl from-neutral-400 leading-6 ">
                     {movie.title}
                   </h3>
                 </div>
               </div>
+            </Link>
+          ))}
+        </div>
+        {""}
+        <div className="mt-5 flex flex-col items-start justify-between gap-4">
+          <h2 className="text-3xl from-neutral-400 tracking-[-0.5px] mb-4">
+            Recomended for you
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {recomendedmovies.map((movie) => (
+              <Link href="#">
+                <div
+                  key={movie.id}
+                  className="bg-inherit  shadow-md rounded-lg overflow-hidden"
+                >
+                  <Image
+                    src={movie.imageUrl}
+                    alt={movie.title}
+                    width={280}
+                    height={174}
+                  />
+
+                  <div className="p-4">
+                    <div className="flex items-center gap-2 from-neutral-400 text-[13px] mb-1">
+                      <p>2019</p>
+                      <span className=" w-1 h-1 bg-zinc-500 rounded-full"></span>
+                      <p className="flex items-center gap-1">
+                        <Image
+                          src={Shape}
+                          alt={movie.title}
+                          width={12}
+                          height={12}
+                        />{" "}
+                        movie
+                      </p>
+                      <span className=" w-1 h-1 bg-zinc-500 rounded-full"></span>
+                      <p>PG</p>
+                    </div>
+                    <h3 className="text-lg from-neutral-400 leading-6 ">
+                      {movie.title}
+                    </h3>
+                  </div>
+                </div>
+              </Link>
             ))}
           </div>
         </div>

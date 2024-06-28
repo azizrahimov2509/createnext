@@ -4,6 +4,7 @@ import searchIcon from "../../../public/search.png";
 import Movie from "../../../public/Rectangle.2png.jpg";
 import ImgOfMovie from "../../../public/Rectangle-fotor-2024062821919.jpg";
 import Shape from "../../../public/Shape (1).png";
+import Link from "next/link";
 
 const recomendedmovies = [
   { id: 1, title: "The Great Lands", imageUrl: Movie },
@@ -42,38 +43,41 @@ export default function page() {
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {recomendedmovies.map((movie) => (
-              <div
-                key={movie.id}
-                className="bg-inherit  shadow-md rounded-lg overflow-hidden"
-              >
-                <Image
-                  src={movie.imageUrl}
-                  alt={movie.title}
-                  width={280}
-                  height={174}
-                />
+              <Link href="#">
+                {" "}
+                <div
+                  key={movie.id}
+                  className="bg-inherit  shadow-md rounded-lg overflow-hidden"
+                >
+                  <Image
+                    src={movie.imageUrl}
+                    alt={movie.title}
+                    width={280}
+                    height={174}
+                  />
 
-                <div className="p-4">
-                  <div className="flex items-center gap-2 from-neutral-400 text-[13px] mb-1">
-                    <p>2019</p>
-                    <span className=" w-1 h-1 bg-zinc-500 rounded-full"></span>
-                    <p className="flex items-center gap-1">
-                      <Image
-                        src={Shape}
-                        alt={movie.title}
-                        width={12}
-                        height={12}
-                      />{" "}
-                      movie
-                    </p>
-                    <span className=" w-1 h-1 bg-zinc-500 rounded-full"></span>
-                    <p>PG</p>
+                  <div className="p-4">
+                    <div className="flex items-center gap-2 from-neutral-400 text-[13px] mb-1">
+                      <p>2019</p>
+                      <span className=" w-1 h-1 bg-zinc-500 rounded-full"></span>
+                      <p className="flex items-center gap-1">
+                        <Image
+                          src={Shape}
+                          alt={movie.title}
+                          width={12}
+                          height={12}
+                        />{" "}
+                        movie
+                      </p>
+                      <span className=" w-1 h-1 bg-zinc-500 rounded-full"></span>
+                      <p>PG</p>
+                    </div>
+                    <h3 className="text-lg from-neutral-400 leading-6 ">
+                      {movie.title}
+                    </h3>
                   </div>
-                  <h3 className="text-lg from-neutral-400 leading-6 ">
-                    {movie.title}
-                  </h3>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
