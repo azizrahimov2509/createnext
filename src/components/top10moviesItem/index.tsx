@@ -12,7 +12,6 @@ export default function Top10MoviesItem({ data }: { data: Movie }) {
     id,
     name,
     year,
-    backdrop,
     poster,
     description,
     type,
@@ -30,8 +29,9 @@ export default function Top10MoviesItem({ data }: { data: Movie }) {
           document.getElementById(`modal_${id}`) as HTMLDialogElement
         ).showModal()
       }
+      className="cursor-pointer"
     >
-      <div className="relative bg-inherit shadow-md rounded-lg overflow-hidden">
+      <div className="relative bg-inherit shadow-md sha rounded-lg overflow-hidden flex flex-col items-center justify-between border-b-2 border-white">
         <Image
           className="object-cover object-center w-[280px] h-[420px]"
           src={poster?.url ?? kinoimg}
@@ -39,10 +39,10 @@ export default function Top10MoviesItem({ data }: { data: Movie }) {
           width={280}
           height={420}
         />
-        <div className="absolute bottom-0 left-0 w-full p-4">
+        <div className=" p-4">
           <div className="flex items-center gap-1 from-neutral-400 text-[15px] text-slate-50 ">
             <p>{year}</p>
-            <span className=" w-1 h-1 bg-slate-50 rounded-full"></span>
+            <span className="w-1 h-1 bg-slate-50 rounded-full"></span>
             <p className="flex items-center gap-1">
               <Image
                 src={Shape}
@@ -52,17 +52,17 @@ export default function Top10MoviesItem({ data }: { data: Movie }) {
               />{" "}
               {type}
             </p>
-            <span className=" w-1 h-1 bg-slate-50 rounded-full"></span>
+            <span className="w-1 h-1 bg-slate-50 rounded-full"></span>
             <p>PG</p>
           </div>
-          <h3 className="text-2xl from-neutral-400 leading-6 ">
+          <h3 className="text-2xl from-neutral-400 leading-6">
             {name ?? alternativeName}
           </h3>
         </div>
       </div>
 
       <dialog id={`modal_${id}`} className="modal">
-        <div className="modal-box flex flex-col ">
+        <div className="modal-box flex flex-col">
           <div className="flex flex-row items-center justify-center">
             <Image
               className="object-cover object-center w-[280px] h-[420px]"
@@ -74,7 +74,7 @@ export default function Top10MoviesItem({ data }: { data: Movie }) {
           </div>
 
           <h3 className="font-bold text-lg">Name: {name ?? alternativeName}</h3>
-          <h3 className="py-4 ">
+          <h3 className="py-4">
             • <span className="from-neutral-800">Description:</span>{" "}
             {description ??
               "Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam quaerat alias cum ad id dolorem dicta deserunt fugiat voluptatum ducimus?"}{" "}

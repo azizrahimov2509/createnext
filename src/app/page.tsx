@@ -1,11 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import searchIcon from "../../public/search.png";
-import ImgOfMovie from "../../public/Rectangle-fotor-2024062821919.jpg";
 import { getTopMovies } from "./queries/top";
 import { Movie } from "@/types";
 import TopMoviesItem from "@/components/topmoviesItem";
-import Shape from "../../public/Shape.png";
 import { getTop10Movies } from "./queries/top10";
 import Top10MoviesItem from "@/components/top10moviesItem";
 
@@ -14,7 +12,7 @@ export default async function Home() {
   const top10Movies = await getTop10Movies();
   return (
     <section>
-      <div className="container  p-4">
+      <div className="container p-4">
         <div className="flex items-center mb-4">
           <Image src={searchIcon} alt="Search" width={24} height={24} />
           <input
@@ -24,12 +22,11 @@ export default async function Home() {
           />
         </div>
         <h2 className="text-3xl from-neutral-400 mb-4">Trending</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 ">
-          {top10Movies.docs.map((movie: Movie) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4">
+          {top10Movies.map((movie: Movie) => (
             <Top10MoviesItem data={movie} key={movie.id} />
           ))}
         </div>
-        {""}
         <div className="mt-5 flex flex-col items-start justify-between gap-4">
           <h2 className="text-3xl from-neutral-400 tracking-[-0.5px] mb-4">
             Series

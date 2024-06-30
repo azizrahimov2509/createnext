@@ -3,7 +3,7 @@
 export async function getTop10Movies() {
   try {
     const req = await fetch(
-      "https://api.kinopoisk.dev/v1.4/movie?rating.imdb=8-10&limit=3",
+      "https://api.kinopoisk.dev/v1.4/movie?rating.imdb=7-10&limit=3&genres.name=комедия",
       {
         headers: {
           "Content-Type": "application/json",
@@ -12,9 +12,9 @@ export async function getTop10Movies() {
       }
     );
     const res = await req.json();
-    return res;
+    return res.docs;
   } catch (error) {
     console.error(error);
-    return { docs: [] };
+    return [];
   }
 }
