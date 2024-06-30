@@ -1,7 +1,5 @@
 "server-only";
 
-import { log } from "console";
-
 export async function getTopMovies() {
   try {
     const req = await fetch(
@@ -14,7 +12,7 @@ export async function getTopMovies() {
       }
     );
     const res = await req.json();
-    log(res.docs);
+
     return res;
   } catch (error) {
     console.error(`Error fetching `, error);

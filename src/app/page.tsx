@@ -3,9 +3,9 @@ import Image from "next/image";
 import searchIcon from "../../public/search.png";
 import { getTopMovies } from "./queries/top";
 import { Movie } from "@/types";
-import TopMoviesItem from "@/components/topmoviesItem";
-import { getTop10Movies } from "./queries/top10";
 import Top10MoviesItem from "@/components/top10moviesItem";
+import { getTop10Movies } from "./queries/top10";
+import TopMoviesItem from "@/components/topmoviesItem";
 
 export default async function Home() {
   const topMovies = await getTopMovies();
