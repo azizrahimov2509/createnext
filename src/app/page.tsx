@@ -10,8 +10,8 @@ import { getTop10Movies } from "./queries/top10";
 import Top10MoviesItem from "@/components/top10moviesItem";
 
 export default async function Home() {
-  const request = await getTopMovies();
-  const requestTop10 = await getTop10Movies();
+  const topMovies = await getTopMovies();
+  const top10Movies = await getTop10Movies();
   return (
     <section>
       <div className="container  p-4">
@@ -25,7 +25,7 @@ export default async function Home() {
         </div>
         <h2 className="text-3xl from-neutral-400 mb-4">Trending</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 ">
-          {requestTop10.docs?.map((movie: Movie) => (
+          {top10Movies.docs.map((movie: Movie) => (
             <Top10MoviesItem data={movie} key={movie.id} />
           ))}
         </div>
@@ -35,7 +35,7 @@ export default async function Home() {
             Series
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {request.docs?.map((series: Movie) => (
+            {topMovies.docs?.map((series: Movie) => (
               <TopMoviesItem data={series} key={series.id} />
             ))}
           </div>
