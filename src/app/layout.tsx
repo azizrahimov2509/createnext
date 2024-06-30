@@ -32,9 +32,9 @@ export default function RootLayout({
   const [activeLink, setActiveLink] = useState<string>("home");
 
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <div className="flex ">
+    <html lang="en" className="bg-slate-800 text-white">
+      <body className={`${inter.className}  flex justify-start items-center `}>
+        <div className="flex flex-row justify-center items-start mt-7">
           <header className="flex flex-col items-center justify-between w-[96px] h-[860px] bg-[#161D2F] px-2 py-5 rounded-3xl m-4">
             <div className="flex flex-col items-center justify-between gap-14">
               <div>
@@ -53,18 +53,15 @@ export default function RootLayout({
                     alt="Shape"
                   />
                 </Link>
-                <Link href={"/about"} onClick={() => setActiveLink("about")}>
+                <Link href={"/movies"} onClick={() => setActiveLink("movies")}>
                   <Image
-                    src={activeLink === "about" ? shapeWhite : shape2}
+                    src={activeLink === "movies" ? shapeWhite : shape2}
                     alt="shape"
                   />
                 </Link>
-                <Link
-                  href={"/contacts"}
-                  onClick={() => setActiveLink("contacts")}
-                >
+                <Link href={"/series"} onClick={() => setActiveLink("series")}>
                   <Image
-                    src={activeLink === "contacts" ? tvWhite : tv}
+                    src={activeLink === "series" ? tvWhite : tv}
                     alt="Tv"
                   />
                 </Link>
@@ -86,7 +83,7 @@ export default function RootLayout({
               </Link>
             </div>
           </header>
-          <main className="flex-1 p-5">{children}</main>
+          <main className="ml-4">{children}</main>
         </div>
       </body>
     </html>

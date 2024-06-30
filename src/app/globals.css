@@ -10,7 +10,7 @@
     @apply h-full scroll-smooth;
   }
   body {
-    @apply h-full flex flex-col bg-[#10141F] text-white;
+    @apply h-full flex flex-col;
   }
   main {
     @apply flex-grow;
