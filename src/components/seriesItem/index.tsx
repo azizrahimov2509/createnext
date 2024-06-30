@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Shape from "../../../public/Shape (1).png";
 import kinoimg from "../../../public/kinopoisk.jpg";
@@ -22,22 +22,35 @@ export default function SeriesItem({ data }: { data: Movie }) {
     rating,
   } = data;
 
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(() => {
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    return favorites.includes(id);
+  });
+
+  useEffect(() => {
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    if (isFavorite) {
+      if (!favorites.includes(id)) {
+        favorites.push(id);
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+      }
+    } else {
+      const updatedFavorites = favorites.filter(
+        (favId: number) => favId !== id
+      );
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    }
+  }, [isFavorite, id]);
 
   const handleFavoriteClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault(); // Prevent default link behavior
-    setIsFavorite(!isFavorite); // Toggle favorite state
-
-    if (!isFavorite) {
-      // If not favorite, add to localStorage or some state
-      // Example: addToFavorites(id);
-    }
+    e.preventDefault();
+    setIsFavorite(!isFavorite);
   };
 
   return (
     <section key={id} className="cursor-pointer relative">
       <Link
-        href="/bookmark"
+        href="#"
         className={`absolute top-2 right-2 p-3 rounded-full transition-colors duration-300 ease-in-out ${
           isFavorite ? "bg-red-500" : "bg-white"
         } text-black shadow-lg hover:bg-red-600`}
@@ -45,7 +58,7 @@ export default function SeriesItem({ data }: { data: Movie }) {
       >
         {isFavorite ? (
           <svg
-            className="w-8 h-8 text-[red]" // Increase the size of the heart icon
+            className="w-8 h-8 text-[red]"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -53,7 +66,7 @@ export default function SeriesItem({ data }: { data: Movie }) {
           </svg>
         ) : (
           <svg
-            className="w-8 h-8 text-black" // Increase the size of the heart icon
+            className="w-8 h-8 text-black"
             fill="currentColor"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"

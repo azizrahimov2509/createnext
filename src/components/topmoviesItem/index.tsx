@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Shape from "../../../public/Shape (1).png";
 import kinoimg from "../../../public/kinopoisk.jpg";
@@ -22,16 +22,29 @@ export default function TopMoviesItem({ data }: { data: Movie }) {
     rating,
   } = data;
 
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(() => {
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    return favorites.includes(id);
+  });
+
+  useEffect(() => {
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    if (isFavorite) {
+      if (!favorites.includes(id)) {
+        favorites.push(id);
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+      }
+    } else {
+      const updatedFavorites = favorites.filter(
+        (favId: number) => favId !== id
+      );
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    }
+  }, [isFavorite, id]);
 
   const handleFavoriteClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault(); // Prevent default link behavior
-    setIsFavorite(!isFavorite); // Toggle favorite state
-
-    if (!isFavorite) {
-      // If not favorite, add to localStorage or some state
-      // Example: addToFavorites(id);
-    }
+    e.preventDefault();
+    setIsFavorite(!isFavorite);
   };
 
   return (
