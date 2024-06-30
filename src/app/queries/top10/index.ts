@@ -1,11 +1,9 @@
 "server-only";
 
-import { log } from "console";
-
-export async function getTopMovies() {
+export async function getTop10Movies() {
   try {
     const req = await fetch(
-      `https://api.kinopoisk.dev/v1.4/movie?rating.imdb=8-10.`,
+      "https://api.kinopoisk.dev/v1.4/movie?rating.imdb=8-10.",
       {
         headers: {
           "Content-Type": "application/json",
@@ -14,9 +12,9 @@ export async function getTopMovies() {
       }
     );
     const res = await req.json();
-    return res;
+    return res.docs;
   } catch (error) {
-    console.error(`Error fetching `, error);
-    return { error: `Failed to fetch ` };
+    console.error(error);
+    return [];
   }
 }

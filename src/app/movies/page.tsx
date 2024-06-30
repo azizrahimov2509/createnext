@@ -11,6 +11,7 @@ import { Movie } from "@/types";
 
 export default async function page() {
   const request = await getContent("movie");
+
   log(request.docs[0]);
 
   return (
