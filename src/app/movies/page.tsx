@@ -28,9 +28,10 @@ export default async function page() {
 
         {""}
         <div className="mt-5 flex flex-col items-start justify-between gap-4">
-          <h2 className="text-3xl from-neutral-400 tracking-[-0.5px] mb-4">
+          <h2 className="text-3xl from-neutral-400 tracking-[-0.5px] mb-4 border-b-2 border-gray-400 pb-2">
             Movies
           </h2>
+
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {request.docs?.map((movie: Movie) => (
               <MovieItem data={movie} key={movie.id} />

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, MouseEvent } from "react";
 import Image from "next/image";
 import Shape from "../../../public/Shape (1).png";
 import kinoimg from "../../../public/kinopoisk.jpg";
@@ -8,6 +8,16 @@ import { Movie } from "@/types";
 import Link from "next/link";
 
 export default function SeriesItem({ data }: { data: Movie }) {
+  const [fav, setFav] = useState<Movie[] | []>([]);
+  const [refresh, setRefresh] = useState<boolean>(false);
+
+  useEffect(() => {
+    const favs =
+      JSON.parse(window.localStorage.getItem("favoritesSeries") as string) ??
+      [];
+    setFav(favs);
+  }, [refresh]);
+
   const {
     id,
     name,
@@ -22,72 +32,78 @@ export default function SeriesItem({ data }: { data: Movie }) {
     rating,
   } = data;
 
-  const [isFavorite, setIsFavorite] = useState(() => {
-    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-    return favorites.includes(id);
-  });
+  const addToFavorites = (e: MouseEvent) => {
+    e.stopPropagation();
 
-  useEffect(() => {
-    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-    if (isFavorite) {
-      if (!favorites.includes(id)) {
-        favorites.push(id);
-        localStorage.setItem("favorites", JSON.stringify(favorites));
-      }
-    } else {
-      const updatedFavorites = favorites.filter(
-        (favId: number) => favId !== id
+    const status = fav.findIndex((item) => item.id === id);
+    if (status === -1) {
+      window?.localStorage.setItem(
+        "favoritesSeries",
+        JSON.stringify([
+          ...(JSON.parse(
+            window.localStorage.getItem("favoritesSeries") as string
+          ) ?? []),
+          data,
+        ])
       );
-      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    } else {
+      window?.localStorage.setItem(
+        "favoritesSeries",
+        JSON.stringify(
+          JSON.parse(
+            window.localStorage.getItem("favoritesSeries") as string
+          ).filter((item: Movie) => item.id !== fav[status].id)
+        )
+      );
     }
-  }, [isFavorite, id]);
 
-  const handleFavoriteClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    setIsFavorite(!isFavorite);
+    setRefresh((prev) => !prev);
   };
 
   return (
-    <section key={id} className="cursor-pointer relative">
-      <Link
-        href="#"
-        className={`absolute top-2 right-2 p-3 rounded-full transition-colors duration-300 ease-in-out ${
-          isFavorite ? "bg-red-500" : "bg-white"
-        } text-black shadow-lg hover:bg-red-600`}
-        onClick={handleFavoriteClick}
-      >
-        {isFavorite ? (
-          <svg
-            className="w-8 h-8 text-[red]"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+    <section
+      key={id}
+      className="cursor-pointer flex flex-col items-center justify-center"
+      onClick={() =>
+        (
+          document.getElementById(`modal_${id}`) as HTMLDialogElement
+        ).showModal()
+      }
+    >
+      <div className="bg-inherit shadow-md rounded-lg overflow-hidden p-6 w-[327px] h-[570px]">
+        <div className="relative flex justify-center items-center w-fit">
+          <Image
+            className="object-cover object-center w-[280px] h-[420px] cursor-pointer"
+            src={poster?.url ?? kinoimg}
+            alt={name ?? alternativeName}
+            width={280}
+            height={420}
+          />
+          <span
+            className="absolute top-3 right-3 p-2 bg-[#] rounded-full cursor-pointer border-2 border-red-600"
+            onClick={addToFavorites}
           >
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-          </svg>
-        ) : (
-          <svg
-            className="w-8 h-8 text-black"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-          </svg>
-        )}
-      </Link>
-      <div className="bg-inherit shadow-md rounded-lg overflow-hidden">
-        <Image
-          onClick={() =>
-            (
-              document.getElementById(`modal_${id}`) as HTMLDialogElement
-            ).showModal()
-          }
-          className="object-cover object-center w-[280px] h-[420px]"
-          src={poster?.url ?? kinoimg}
-          alt={name ?? alternativeName}
-          width={280}
-          height={420}
-        />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              className="inline-block h-8 w-8 stroke-current hover:fill-[red] hover:stroke-[red]"
+              style={
+                fav.findIndex((item) => item.id === id) !== -1
+                  ? { fill: "red", stroke: "red" }
+                  : {}
+              }
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                stroke="red"
+              ></path>
+            </svg>
+          </span>
+        </div>
         <div className="p-4">
           <div className="flex items-center gap-2 from-neutral-400 text-[13px] mb-1">
             <p>{year}</p>
@@ -112,6 +128,11 @@ export default function SeriesItem({ data }: { data: Movie }) {
 
       <dialog id={`modal_${id}`} className="modal">
         <div className="modal-box flex flex-col ">
+          <div className="modal-action mb-3">
+            <form method="dialog">
+              <button className="btn btn-error">Close❌</button>
+            </form>
+          </div>
           <div className="flex flex-row items-center justify-center">
             <Image
               className="object-cover object-center w-[280px] h-[420px]"
@@ -162,11 +183,6 @@ export default function SeriesItem({ data }: { data: Movie }) {
           >
             Watch🎥
           </Link>
-          <div className="modal-action">
-            <form method="dialog">
-              <button className="btn btn-error">Close❌</button>
-            </form>
-          </div>
         </div>
       </dialog>
     </section>
