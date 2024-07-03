@@ -30,6 +30,7 @@ export default function SeriesItem({ data }: { data: Movie }) {
     countries,
     genres,
     rating,
+    setUpdate,
   } = data;
 
   const addToFavorites = (e: MouseEvent) => {
@@ -55,6 +56,10 @@ export default function SeriesItem({ data }: { data: Movie }) {
           ).filter((item: Movie) => item.id !== fav[status].id)
         )
       );
+
+      if (setUpdate) {
+        setUpdate((prev) => !prev);
+      }
     }
 
     setRefresh((prev) => !prev);
