@@ -1,5 +1,3 @@
-"use client";
-
 import React, { MouseEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import Shape from "../../../public/Shape (1).png";
@@ -12,18 +10,18 @@ interface MovieItemProps {
 }
 
 export default function MovieItem({ data }: MovieItemProps) {
-  const [fav, setFav] = useState<Movie[] | []>([]);
+  const [fav, setFav] = useState<Movie[]>([]);
   const [refresh, setRefresh] = useState<boolean>(false);
+
   useEffect(() => {
-    const favs =
-      JSON.parse(window.localStorage.getItem("favorites") as string) ?? [];
+    const favs = JSON.parse(window.localStorage.getItem("favorites") || "[]");
     setFav(favs);
   }, [refresh]);
+
   const {
     id,
     name,
     year,
-    backdrop,
     poster,
     description,
     type,
@@ -37,27 +35,16 @@ export default function MovieItem({ data }: MovieItemProps) {
     e.stopPropagation();
 
     const status = fav.findIndex((item) => item.id === id);
-    if (status == -1) {
-      window?.localStorage.setItem(
-        "favorites",
-        JSON.stringify([
-          ...(JSON.parse(window.localStorage.getItem("favorites") as string) ??
-            []),
-          data,
-        ])
-      );
+    if (status === -1) {
+      window.localStorage.setItem("favorites", JSON.stringify([...fav, data]));
     } else {
-      window?.localStorage.setItem(
+      window.localStorage.setItem(
         "favorites",
-        JSON.stringify(
-          JSON.parse(window.localStorage.getItem("favorites") as string).filter(
-            (item: Movie) => item.id !== fav[status].id
-          )
-        )
+        JSON.stringify(fav.filter((item) => item.id !== id))
       );
 
       if (data?.setUpdate) {
-        data?.setUpdate((prev) => !prev);
+        data.setUpdate((prev) => !prev);
       }
     }
 
@@ -72,10 +59,10 @@ export default function MovieItem({ data }: MovieItemProps) {
           document.getElementById(`modal_${id}`) as HTMLDialogElement
         ).showModal()
       }
-      className="flex flex-col items-center justify-center "
+      className="flex flex-col items-center justify-center"
     >
       <div className="bg-inherit shadow-md rounded-lg overflow-hidden p-6 w-[327px] h-[570px]">
-        <div className="relative  flex justify-center items-center w-fit">
+        <div className="relative flex justify-center items-center w-fit">
           <Image
             className="object-cover object-center w-[280px] h-[420px] cursor-pointer"
             src={poster?.url ?? kinoimg}
@@ -93,7 +80,7 @@ export default function MovieItem({ data }: MovieItemProps) {
               viewBox="0 0 24 24"
               className="inline-block h-8 w-8 stroke-current hover:fill-[red] hover:stroke-[red]"
               style={
-                fav.findIndex((item) => item.id === id) != -1
+                fav.findIndex((item) => item.id === id) !== -1
                   ? { fill: "red", stroke: "red" }
                   : {}
               }
@@ -131,7 +118,7 @@ export default function MovieItem({ data }: MovieItemProps) {
       </div>
 
       <dialog id={`modal_${id}`} className="modal">
-        <div className="modal-box flex flex-col ">
+        <div className="modal-box flex flex-col">
           <div className="modal-action mb-3">
             <form method="dialog">
               <button className="btn btn-error">Close❌</button>
@@ -148,13 +135,12 @@ export default function MovieItem({ data }: MovieItemProps) {
           </div>
 
           <h3 className="font-bold text-lg">Name: {name ?? alternativeName}</h3>
-          <h3 className="py-4 ">
+          <h3 className="py-4">
             • <span className="from-neutral-800">Description:</span>{" "}
             {description ??
               "Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam quaerat alias cum ad id dolorem dicta deserunt fugiat voluptatum ducimus?"}{" "}
           </h3>
           <h3 className="pb-1">
-            {" "}
             • <span className="from-neutral-800">Year: </span>
             {year}
           </h3>
@@ -164,7 +150,7 @@ export default function MovieItem({ data }: MovieItemProps) {
           </h3>
           <h3 className="pb-1">
             • <span className="from-neutral-800">Genre: </span>
-            {genres.map((genre, index) => (
+            {genres?.map((genre, index) => (
               <span key={index}>
                 {genre.name}
                 {index < genres.length - 1 ? ", " : ""}
@@ -181,7 +167,7 @@ export default function MovieItem({ data }: MovieItemProps) {
             {`${rating?.imdb ? rating?.imdb : rating?.kp} ⭐`}
           </h3>
           <Link
-            target="blank"
+            target="_blank"
             href={`https://www.kinopoisk.ru/film/${id}/`}
             className="btn btn-info"
           >
