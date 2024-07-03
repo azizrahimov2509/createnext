@@ -26,7 +26,7 @@ export default async function Home() {
             Trending
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 border-b-2 border-gray-400  pb-2 ">
-            {top10Movies.map((movie: Movie) => (
+            {top10Movies.docs?.map((movie: Movie) => (
               <Top10MoviesItem data={movie} key={movie.id} />
             ))}
           </div>
