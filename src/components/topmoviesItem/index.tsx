@@ -30,12 +30,21 @@ export default function TopMoviesItem({ data }: { data: Movie }) {
       if (status === -1) {
         window.localStorage.setItem(
           "favorites",
-          JSON.stringify([...favMovies, data])
+          JSON.stringify([
+            ...(JSON.parse(
+              window.localStorage.getItem("favorites") as string
+            ) ?? []),
+            data,
+          ])
         );
       } else {
-        window.localStorage.setItem(
+        window?.localStorage.setItem(
           "favorites",
-          JSON.stringify(favMovies.filter((item) => item.id !== data.id))
+          JSON.stringify(
+            JSON.parse(
+              window.localStorage.getItem("favorites") as string
+            ).filter((item: Movie) => item.id !== favMovies[status].id)
+          )
         );
       }
     } else {
@@ -43,12 +52,21 @@ export default function TopMoviesItem({ data }: { data: Movie }) {
       if (status === -1) {
         window.localStorage.setItem(
           "favoritesSeries",
-          JSON.stringify([...favSeries, data])
+          JSON.stringify([
+            ...(JSON.parse(
+              window.localStorage.getItem("favoritesSeries") as string
+            ) ?? []),
+            data,
+          ])
         );
       } else {
-        window.localStorage.setItem(
+        window?.localStorage.setItem(
           "favoritesSeries",
-          JSON.stringify(favSeries.filter((item) => item.id !== data.id))
+          JSON.stringify(
+            JSON.parse(
+              window.localStorage.getItem("favoritesSeries") as string
+            ).filter((item: Movie) => item.id !== favMovies[status].id)
+          )
         );
       }
     }

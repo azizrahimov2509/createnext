@@ -38,11 +38,22 @@ export default function MovieItem({ data }: MovieItemProps) {
 
     const status = fav.findIndex((item) => item.id === id);
     if (status === -1) {
-      window.localStorage.setItem("favorites", JSON.stringify([...fav, data]));
-    } else {
       window.localStorage.setItem(
         "favorites",
-        JSON.stringify(fav.filter((item) => item.id !== id))
+        JSON.stringify([
+          ...(JSON.parse(window.localStorage.getItem("favorites") as string) ??
+            []),
+          data,
+        ])
+      );
+    } else {
+      window?.localStorage.setItem(
+        "favorites",
+        JSON.stringify(
+          JSON.parse(window.localStorage.getItem("favorites") as string).filter(
+            (item: Movie) => item.id !== fav[status].id
+          )
+        )
       );
 
       if (data?.setUpdate) {

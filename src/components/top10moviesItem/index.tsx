@@ -25,12 +25,21 @@ export default function Top10MoviesItem({ data }: { data: Movie }) {
     if (status === -1) {
       window.localStorage.setItem(
         "favoritesSeries",
-        JSON.stringify([...fav, data])
+        JSON.stringify([
+          ...(JSON.parse(
+            window.localStorage.getItem("favoritesSeries") as string
+          ) ?? []),
+          data,
+        ])
       );
     } else {
-      window.localStorage.setItem(
+      window?.localStorage.setItem(
         "favoritesSeries",
-        JSON.stringify(fav.filter((item) => item.id !== data.id))
+        JSON.stringify(
+          JSON.parse(
+            window.localStorage.getItem("favoritesSeries") as string
+          ).filter((item: Movie) => item.id !== fav[status].id)
+        )
       );
     }
 
