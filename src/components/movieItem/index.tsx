@@ -29,7 +29,7 @@ export default function MovieItem({ data }: MovieItemProps) {
     type,
     alternativeName,
     countries,
-
+    genres,
     rating,
   } = data;
 
@@ -149,6 +149,15 @@ export default function MovieItem({ data }: MovieItemProps) {
           <h3 className="pb-1">
             • <span className="from-neutral-800">Type: </span>
             {type}
+          </h3>
+          <h3 className="pb-1">
+            • <span className="from-neutral-800">Genre: </span>
+            {genres?.map((genre, index) => (
+              <span key={index}>
+                {genre.name}
+                {index < genres.length - 1 ? ", " : ""}
+              </span>
+            ))}
           </h3>
 
           <h3 className="pb-4">
