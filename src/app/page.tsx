@@ -2,22 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 import searchIcon from "../../public/search.png";
 import { getTopMovies } from "./queries/top";
-import { getTop10Movies } from "./queries/top10";
 import { Movie } from "@/types";
 import Top10MoviesItem from "@/components/top10moviesItem";
+import { getTop10Movies } from "./queries/top10";
 import TopMoviesItem from "@/components/topmoviesItem";
 
 export default async function Home() {
-  let topMovies = { docs: [] as Movie[] };
-  let top10Movies = { docs: [] as Movie[] };
-
-  try {
-    topMovies = await getTopMovies();
-    top10Movies = await getTop10Movies();
-  } catch (error) {
-    console.error("Error fetching movies data:", error);
-  }
-
+  const topMovies = await getTopMovies();
+  const top10Movies = await getTop10Movies();
   return (
     <section>
       <div className="container p-4">
@@ -34,13 +26,9 @@ export default async function Home() {
             Trending
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 border-b-2 border-gray-400  pb-2 ">
-            {top10Movies.docs.length > 0 ? (
-              top10Movies.docs.map((movie: Movie) => (
-                <Top10MoviesItem data={movie} key={movie.id} />
-              ))
-            ) : (
-              <p>No trending movies available.</p>
-            )}
+            {top10Movies.map((movie: Movie) => (
+              <Top10MoviesItem data={movie} key={movie.id} />
+            ))}
           </div>
         </div>
 
@@ -49,13 +37,9 @@ export default async function Home() {
             Recommended for you
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {topMovies.docs.length > 0 ? (
-              topMovies.docs.map((series: Movie) => (
-                <TopMoviesItem data={series} key={series.id} />
-              ))
-            ) : (
-              <p>No recommended movies available.</p>
-            )}
+            {topMovies.docs?.map((series: Movie) => (
+              <TopMoviesItem data={series} key={series.id} />
+            ))}
           </div>
         </div>
       </div>
