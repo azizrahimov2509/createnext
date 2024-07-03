@@ -10,7 +10,7 @@ export type Movie = {
   poster?: { url: string };
   description: string;
   type: string;
-  alternativeName?: string;
+  alternativeName: string;
   genres: [{ name: string }];
   countries: [{ name: string }];
   rating?: { kp: string | number; imdb: string | number };
