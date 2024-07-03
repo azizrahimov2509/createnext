@@ -1,18 +1,18 @@
-"server-only";
+// queries.ts
+"use server";
 
-import { log } from "console";
-
-export async function getContent(type: string) {
+export async function getContent(type: string, query: string = "") {
   try {
-    const req = await fetch(
-      `https://api.kinopoisk.dev/v1.4/movie?limit=20&type=${type}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-KEY": "371X6GS-MS941WH-NAG4D1T-02JEN9D",
-        },
-      }
-    );
+    const url = query
+      ? `https://api.kinopoisk.dev/v1.4/movie/search?limit=20&type=${type}&query=${query}`
+      : `https://api.kinopoisk.dev/v1.4/movie?limit=20&type=${type}`;
+
+    const req = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": "H0TQ2K2-59NME4T-K74Q5K6-XKP2NKW",
+      },
+    });
     const res = await req.json();
     return res;
   } catch (error) {

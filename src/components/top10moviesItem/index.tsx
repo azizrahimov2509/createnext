@@ -8,54 +8,30 @@ import { Movie } from "@/types";
 import Link from "next/link";
 
 export default function Top10MoviesItem({ data }: { data: Movie }) {
-  const [fav, setFav] = useState<Movie[] | []>([]);
+  const [fav, setFav] = useState<Movie[]>([]);
   const [refresh, setRefresh] = useState<boolean>(false);
+
   useEffect(() => {
     const favs =
       JSON.parse(window.localStorage.getItem("favoritesSeries") as string) ??
       [];
     setFav(favs);
   }, [refresh]);
-  const {
-    id,
-    name,
-    year,
-    poster,
-    description,
-    type,
-    alternativeName,
-    countries,
-
-    rating,
-  } = data;
 
   const addToFavorites = (e: MouseEvent) => {
     e.stopPropagation();
 
-    const status = fav.findIndex((item) => item.id === id);
-    if (status == -1) {
-      window?.localStorage.setItem(
+    const status = fav.findIndex((item) => item.id === data.id);
+    if (status === -1) {
+      window.localStorage.setItem(
         "favoritesSeries",
-        JSON.stringify([
-          ...(JSON.parse(
-            window.localStorage.getItem("favoritesSeries") as string
-          ) ?? []),
-          data,
-        ])
+        JSON.stringify([...fav, data])
       );
     } else {
-      window?.localStorage.setItem(
+      window.localStorage.setItem(
         "favoritesSeries",
-        JSON.stringify(
-          JSON.parse(
-            window.localStorage.getItem("favoritesSeries") as string
-          ).filter((item: Movie) => item.id !== fav[status].id)
-        )
+        JSON.stringify(fav.filter((item) => item.id !== data.id))
       );
-
-      if (data?.setUpdate) {
-        data?.setUpdate((prev) => !prev);
-      }
     }
 
     setRefresh((prev) => !prev);
@@ -67,7 +43,7 @@ export default function Top10MoviesItem({ data }: { data: Movie }) {
         className="cursor-pointer flex flex-col items-center justify-center mb-3"
         onClick={() =>
           (
-            document.getElementById(`modal_${id}`) as HTMLDialogElement
+            document.getElementById(`modal_${data.id}`) as HTMLDialogElement
           ).showModal()
         }
       >
@@ -75,8 +51,8 @@ export default function Top10MoviesItem({ data }: { data: Movie }) {
           <div className="relative  flex justify-center items-center w-fit">
             <Image
               className="object-cover object-center w-[280px] h-[420px] cursor-pointer"
-              src={poster?.url ?? kinoimg}
-              alt={name ?? alternativeName}
+              src={data.poster?.url ?? kinoimg}
+              alt={data.name ?? data.alternativeName}
               width={280}
               height={420}
             />
@@ -90,7 +66,7 @@ export default function Top10MoviesItem({ data }: { data: Movie }) {
                 viewBox="0 0 24 24"
                 className="inline-block h-8 w-8 stroke-current hover:fill-[red] hover:stroke-[red]"
                 style={
-                  fav.findIndex((item) => item.id === id) != -1
+                  fav.findIndex((item) => item.id === data.id) !== -1
                     ? { fill: "red", stroke: "red" }
                     : {}
                 }
@@ -107,27 +83,27 @@ export default function Top10MoviesItem({ data }: { data: Movie }) {
           </div>
           <div className="p-4">
             <div className="flex items-center gap-1 from-neutral-400 text-[15px] text-slate-50 ">
-              <p>{year}</p>
+              <p>{data.year}</p>
               <span className="w-1 h-1 bg-slate-50 rounded-full"></span>
               <p className="flex items-center gap-1">
                 <Image
                   src={Shape}
-                  alt={name ?? alternativeName}
+                  alt={data.name ?? data.alternativeName}
                   width={12}
                   height={12}
                 />{" "}
-                {type}
+                {data.type}
               </p>
               <span className="w-1 h-1 bg-slate-50 rounded-full"></span>
               <p>PG</p>
             </div>
             <h3 className="text-2xl from-neutral-400 leading-6">
-              {name ?? alternativeName}
+              {data.name ?? data.alternativeName}
             </h3>
           </div>
         </div>
         {""}
-        <dialog id={`modal_${id}`} className="modal">
+        <dialog id={`modal_${data.id}`} className="modal">
           <div className="modal-box flex flex-col">
             <div className="modal-action mb-3">
               <form method="dialog">
@@ -137,42 +113,42 @@ export default function Top10MoviesItem({ data }: { data: Movie }) {
             <div className="flex flex-row items-center justify-center">
               <Image
                 className="object-cover object-center w-[280px] h-[420px]"
-                src={poster?.url ?? kinoimg}
-                alt={name ?? alternativeName}
+                src={data.poster?.url ?? kinoimg}
+                alt={data.name ?? data.alternativeName}
                 width={280}
                 height={420}
               />
             </div>
 
             <h3 className="font-bold text-lg">
-              Name: {name ?? alternativeName}
+              Name: {data.name ?? data.alternativeName}
             </h3>
             <h3 className="py-4">
               • <span className="from-neutral-800">Description:</span>{" "}
-              {description ??
+              {data.description ??
                 "Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam quaerat alias cum ad id dolorem dicta deserunt fugiat voluptatum ducimus?"}{" "}
             </h3>
             <h3 className="pb-1">
               {" "}
               • <span className="from-neutral-800">Year: </span>
-              {year}
+              {data.year}
             </h3>
             <h3 className="pb-1">
               • <span className="from-neutral-800">Type: </span>
-              {type}
+              {data.type}
             </h3>
 
             <h3 className="pb-4">
               • <span className="from-neutral-800">Country: </span>
-              {countries?.[0]?.name ?? "N/A"}
+              {data.countries?.[0]?.name ?? "N/A"}
             </h3>
             <h3 className="pb-4">
               • <span className="from-neutral-800">Rating: </span>
-              {`${rating?.imdb ? rating?.imdb : rating?.kp} ⭐`}
+              {`${data.rating?.imdb ? data.rating?.imdb : data.rating?.kp} ⭐`}
             </h3>
             <Link
               target="blank"
-              href={`https://www.kinopoisk.ru/film/${id}/`}
+              href={`https://www.kinopoisk.ru/film/${data.id}/`}
               className="btn btn-info"
             >
               Watch🎥

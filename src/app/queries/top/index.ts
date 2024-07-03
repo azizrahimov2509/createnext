@@ -1,21 +1,22 @@
-"server-only";
+// queries/top.ts
+"use server";
 
-export async function getTopMovies() {
+export async function getTopMovies(query: string = "") {
   try {
-    const req = await fetch(
-      `https://api.kinopoisk.dev/v1.4/movie?rating.imdb=8-10.`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-KEY": "371X6GS-MS941WH-NAG4D1T-02JEN9D",
-        },
-      }
-    );
-    const res = await req.json();
+    const url = query
+      ? `https://api.kinopoisk.dev/v1.4/movie/search?limit=10&query=${query}&rating.imdb=8-10`
+      : `https://api.kinopoisk.dev/v1.4/movie?rating.imdb=8-10`;
 
+    const req = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": "H0TQ2K2-59NME4T-K74Q5K6-XKP2NKW",
+      },
+    });
+    const res = await req.json();
     return res.docs;
   } catch (error) {
-    console.error(`Error fetching `, error);
-    return { error: `Failed to fetch ` };
+    console.error(`Error fetching top movies:`, error);
+    return [];
   }
 }
