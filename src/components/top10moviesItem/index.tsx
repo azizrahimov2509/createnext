@@ -8,18 +8,25 @@ import { Movie } from "@/types";
 import Link from "next/link";
 
 export default function Top10MoviesItem({ data }: { data: Movie }) {
-  const [fav, setFav] = useState<Movie[] | []>([]);
+  const [favMovies, setFavMovies] = useState<Movie[] | []>([]);
+  const [favSeries, setFavSeries] = useState<Movie[] | []>([]);
   const [refresh, setRefresh] = useState<boolean>(false);
+
   useEffect(() => {
-    const favs =
+    const movies =
+      JSON.parse(window.localStorage.getItem("favorites") as string) ?? [];
+    const series =
       JSON.parse(window.localStorage.getItem("favoritesSeries") as string) ??
       [];
-    setFav(favs);
+    setFavMovies(movies);
+    setFavSeries(series);
   }, [refresh]);
+
   const {
     id,
     name,
     year,
+    backdrop,
     poster,
     description,
     type,
@@ -32,29 +39,31 @@ export default function Top10MoviesItem({ data }: { data: Movie }) {
   const addToFavorites = (e: MouseEvent) => {
     e.stopPropagation();
 
-    const status = fav.findIndex((item) => item.id === id);
-    if (status == -1) {
-      window?.localStorage.setItem(
-        "favoritesSeries",
-        JSON.stringify([
-          ...(JSON.parse(
-            window.localStorage.getItem("favoritesSeries") as string
-          ) ?? []),
-          data,
-        ])
-      );
+    if (type === "movie") {
+      const status = favMovies.findIndex((item) => item.id === id);
+      if (status === -1) {
+        window.localStorage.setItem(
+          "favorites",
+          JSON.stringify([...favMovies, data])
+        );
+      } else {
+        window.localStorage.setItem(
+          "favorites",
+          JSON.stringify(favMovies.filter((item) => item.id !== id))
+        );
+      }
     } else {
-      window?.localStorage.setItem(
-        "favoritesSeries",
-        JSON.stringify(
-          JSON.parse(
-            window.localStorage.getItem("favoritesSeries") as string
-          ).filter((item: Movie) => item.id !== fav[status].id)
-        )
-      );
-
-      if (data?.setUpdate) {
-        data?.setUpdate((prev) => !prev);
+      const status = favSeries.findIndex((item) => item.id === id);
+      if (status === -1) {
+        window.localStorage.setItem(
+          "favoritesSeries",
+          JSON.stringify([...favSeries, data])
+        );
+      } else {
+        window.localStorage.setItem(
+          "favoritesSeries",
+          JSON.stringify(favSeries.filter((item) => item.id !== id))
+        );
       }
     }
 
@@ -90,7 +99,9 @@ export default function Top10MoviesItem({ data }: { data: Movie }) {
                 viewBox="0 0 24 24"
                 className="inline-block h-8 w-8 stroke-current hover:fill-[red] hover:stroke-[red]"
                 style={
-                  fav.findIndex((item) => item.id === id) != -1
+                  (type === "movie"
+                    ? favMovies.findIndex((item) => item.id === id)
+                    : favSeries.findIndex((item) => item.id === id)) !== -1
                     ? { fill: "red", stroke: "red" }
                     : {}
                 }
