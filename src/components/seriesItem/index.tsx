@@ -170,7 +170,7 @@ export default function SeriesItem({ data }: { data: Movie }) {
 
           <h3 className="pb-4">
             • <span className="from-neutral-800">Country: </span>
-            {countries[0].name}
+            {countries?.[0]?.name ?? "N/A"}
           </h3>
           <h3 className="pb-4">
             • <span className="from-neutral-800">Rating: </span>
