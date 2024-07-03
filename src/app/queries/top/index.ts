@@ -13,7 +13,7 @@ export async function getTopMovies() {
     );
     const res = await req.json();
 
-    return res;
+    return res.docs;
   } catch (error) {
     console.error(`Error fetching `, error);
     return { error: `Failed to fetch ` };
