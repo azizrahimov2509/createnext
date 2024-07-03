@@ -7,7 +7,7 @@ export async function getTop10Movies() {
       {
         headers: {
           "Content-Type": "application/json",
-          "X-API-KEY": "H0TQ2K2-59NME4T-K74Q5K6-XKP2NKW",
+          "X-API-KEY": "ZZT4WX1-QZYMBYF-QF5KNM3-0Y7T9MF",
         },
       }
     );

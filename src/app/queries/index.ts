@@ -10,7 +10,7 @@ export async function getContent(type: string, query: string = "") {
     const req = await fetch(url, {
       headers: {
         "Content-Type": "application/json",
-        "X-API-KEY": "H0TQ2K2-59NME4T-K74Q5K6-XKP2NKW",
+        "X-API-KEY": "ZZT4WX1-QZYMBYF-QF5KNM3-0Y7T9MF",
       },
     });
     const res = await req.json();
