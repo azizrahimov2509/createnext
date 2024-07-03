@@ -1,3 +1,5 @@
+"use client";
+
 import React, { MouseEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import Shape from "../../../public/Shape (1).png";
