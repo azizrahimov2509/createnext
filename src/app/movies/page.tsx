@@ -33,7 +33,7 @@ export default async function page() {
           </h2>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {request?.docs?.map((movie: Movie) => (
+            {request.docs?.map((movie: Movie) => (
               <MovieItem data={movie} key={movie.id} />
             ))}
           </div>
