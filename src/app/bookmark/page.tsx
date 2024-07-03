@@ -12,6 +12,7 @@ export default function Page() {
   const [data, setData] = useState<Movie[] | []>([]);
   const [dataSeries, setDataSeries] = useState<Movie[] | []>([]);
   const [refresh, setUpdate] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   useEffect(() => {
     const value = JSON.parse(localStorage.getItem("favorites") as string) ?? [];
@@ -24,6 +25,18 @@ export default function Page() {
     setDataSeries(value);
   }, [refresh]);
 
+  const filteredMovies = data.filter((item) =>
+    (item.name ?? item.alternativeName)
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
+  );
+
+  const filteredSeries = dataSeries.filter((item) =>
+    (item.name ?? item.alternativeName)
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
+  );
+
   return (
     <section>
       <div className="container p-5">
@@ -32,6 +45,8 @@ export default function Page() {
           <input
             type="text"
             placeholder="Search for bookmarked shows"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="border rounded-l-lg py-2 px-4 w-[321px] h-[32] outline-none bg-inherit border-none text-xl caret-red-800"
           />
         </div>
@@ -42,8 +57,8 @@ export default function Page() {
             Bookmarked Movies
           </h2>
           <div className="grid grid-cols-1 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 gap-4">
-            {!!data.length ? (
-              data.map((item) => {
+            {!!filteredMovies.length ? (
+              filteredMovies.map((item) => {
                 return (
                   <MovieItem
                     data={{ ...item, setUpdate: setUpdate }}
@@ -65,8 +80,8 @@ export default function Page() {
             Bookmarked TV Series
           </h2>
           <div className="grid grid-cols-1 2xl:grid-cols-4 xl:grid-cols-3 md:grid-cols-2 gap-4">
-            {!!dataSeries.length ? (
-              dataSeries.map((item) => {
+            {!!filteredSeries.length ? (
+              filteredSeries.map((item) => {
                 return (
                   <SeriesItem
                     data={{ ...item, setUpdate: setUpdate }}
